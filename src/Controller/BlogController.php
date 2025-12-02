@@ -15,4 +15,28 @@ final class BlogController extends AbstractController
             'controller_name' => 'BlogController',
         ]);
     }
+
+   #[Route('/blog/Home', name: 'app_Home')]
+    public function home(): Response
+    {
+        return $this->render('blog/Home.html.twig', [
+            'controller_name' => 'BlogController',
+        ]);
+    }
+    #[Route('/blog/CV', name: 'app_CV')]
+    public function CV(): Response
+    {
+        return $this->render('blog/CV.html.twig', [
+            'controller_name' => 'BlogController',
+        ]);
+    }
+    
+     #[Route('/blog/Hobbies', name: 'app_Hobbies')]
+    public function Hobbies(): Response
+    {
+        return $this->render('blog/Hobbies.html.twig', [
+            'controller_name' => 'BlogController',
+        ]);
+    }
 }
+
