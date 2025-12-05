@@ -38,5 +38,14 @@ final class BlogController extends AbstractController
             'controller_name' => 'BlogController',
         ]);
     }
+
+     #[Route('/blog/Compétences', name: 'app_Compétences')]
+    public function Compétences(): Response
+    {
+        return $this->render('blog/Compétences.html.twig', [
+            'controller_name' => 'BlogController',
+        ]);
+    }
+
 }
 
