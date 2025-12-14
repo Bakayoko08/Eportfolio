@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Contacts
+{% endblock %}
+
+{% block body %}
+    <section id="contact" class="bg-light">
+    <div class="container">
+      <h2 class="mb-4">Contact</h2>
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <p>
+            Un projet en tête, une mission freelance ou simplement envie d’échanger ?
+            N’hésite pas à m’écrire via le formulaire ci-dessous.
+          </p>
+          <ul class="list-unstyled">
+            <li><strong>Email:</strong> zoumana.bakayoko@etu.univ-st-etienne.fr</li>
+            <li><strong>LinkedIn:</strong> <a href="#">linkedin.com/in/jeandupont</a></li>
+            <li><strong>GitHub:</strong> <a href="#">github.com/jeandupont</a></li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <form>
+            <div class="mb-3">
+              <label for="name" class="form-label">Nom</label>
+              <input type="text" class="form-control" id="name" placeholder="Votre nom">
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="vous@exemple.com">
+            </div>
+            <div class="mb-3">
+              <label for="message" class="form-label">Message</label>
+              <textarea class="form-control" id="message" rows="4"
+                        placeholder="Parlez-moi de votre projet"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}
