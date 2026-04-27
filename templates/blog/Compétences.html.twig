@@ -1,37 +1,353 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Mes compétences
-{% endblock %}
+{% block title %}Compétences – Zoumana Bakayoko{% endblock %}
 
 {% block body %}
-    
-  <section id="skills">
-    <div class="container">
-      <h2 class="mb-4">Compétences</h2>
-      <div class="row">
-        <div class="col-md-4 mb-4">
-          <a href="/Compétence1" class="btn btn-dark btn-lg me-2">Administrer les réseaux et l'internet</a
-          <ul class="list-unstyled mb-0">
+
+<style>
+  /* ── PAGE HERO ── */
+  .page-hero {
+    padding: 5rem 2rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    top: -40%; right: -20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,107,53,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .page-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -20%; left: -10%;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(27,153,139,.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .page-hero-inner { max-width: 1100px; margin: 0 auto; }
+  .page-label {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    color: var(--c-teal);
+    font-weight: 500;
+    margin-bottom: .6rem;
+  }
+  .page-hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+  }
+  .page-hero h1 em { font-style: normal; color: var(--c-orange); }
+  .page-hero-sub {
+    color: var(--c-muted);
+    font-size: .97rem;
+    margin-top: .75rem;
+    max-width: 520px;
+    line-height: 1.7;
+  }
+
+  /* ── SECTION ── */
+  .skills-section { padding: 2rem 2rem 5rem; }
+  .skills-inner { max-width: 1100px; margin: 0 auto; }
+
+  /* ── GRILLE COMPÉTENCES ── */
+  .competences-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.75rem;
+    margin-bottom: 4rem;
+  }
+
+  /* ── CARTE COMPÉTENCE ── */
+  .comp-card {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform .3s, border-color .3s, box-shadow .3s;
+  }
+  .comp-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0,0,0,.3);
+  }
+  .comp-card:nth-child(1):hover { border-color: rgba(255,107,53,.4); }
+  .comp-card:nth-child(2):hover { border-color: rgba(27,153,139,.4); }
+  .comp-card:nth-child(3):hover { border-color: rgba(139,92,246,.4); }
+
+  /* En-tête carte */
+  .comp-header {
+    padding: 1.75rem 1.75rem 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .comp-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+    flex-shrink: 0;
+    opacity: .15;
+  }
+  .comp-card:nth-child(1) .comp-num { color: var(--c-orange); opacity: 1; }
+  .comp-card:nth-child(2) .comp-num { color: var(--c-teal);   opacity: 1; }
+  .comp-card:nth-child(3) .comp-num { color: #8B5CF6;         opacity: 1; }
+
+  .comp-header-text { flex: 1; }
+  .comp-tag {
+    display: inline-block;
+    font-size: .72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    padding: .22rem .65rem;
+    border-radius: 2rem;
+    margin-bottom: .5rem;
+  }
+  .comp-card:nth-child(1) .comp-tag { background: rgba(255,107,53,.12); color: var(--c-orange); }
+  .comp-card:nth-child(2) .comp-tag { background: rgba(27,153,139,.12); color: var(--c-teal); }
+  .comp-card:nth-child(3) .comp-tag { background: rgba(139,92,246,.12); color: #8B5CF6; }
+
+  .comp-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--c-text);
+    line-height: 1.3;
+  }
+
+  /* Séparateur */
+  .comp-divider {
+    height: 1px;
+    background: rgba(255,255,255,.07);
+    margin: 0 1.75rem;
+  }
+
+  /* Liste des ressources */
+  .comp-body { padding: 1.25rem 1.75rem 1.75rem; }
+  .comp-body-label {
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--c-muted);
+    font-weight: 500;
+    margin-bottom: .9rem;
+  }
+  .comp-ressources {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+    margin-bottom: 1.5rem;
+  }
+  .comp-ressources li {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    font-size: .88rem;
+    color: rgba(240,240,240,.75);
+    line-height: 1.4;
+  }
+  .comp-ressources li::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .comp-card:nth-child(1) .comp-ressources li::before { background: var(--c-orange); }
+  .comp-card:nth-child(2) .comp-ressources li::before { background: var(--c-teal); }
+  .comp-card:nth-child(3) .comp-ressources li::before { background: #8B5CF6; }
+
+  /* Bouton voir détail */
+  .comp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .65rem 1.25rem;
+    border-radius: .7rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .88rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+    border: 1px solid transparent;
+  }
+  .comp-btn::after { content: '→'; transition: transform .2s; }
+  .comp-btn:hover::after { transform: translateX(4px); }
+
+  .comp-card:nth-child(1) .comp-btn {
+    background: rgba(255,107,53,.12);
+    color: var(--c-orange);
+    border-color: rgba(255,107,53,.2);
+  }
+  .comp-card:nth-child(1) .comp-btn:hover {
+    background: rgba(255,107,53,.2);
+    box-shadow: 0 4px 16px rgba(255,107,53,.2);
+  }
+  .comp-card:nth-child(2) .comp-btn {
+    background: rgba(27,153,139,.12);
+    color: var(--c-teal);
+    border-color: rgba(27,153,139,.2);
+  }
+  .comp-card:nth-child(2) .comp-btn:hover {
+    background: rgba(27,153,139,.2);
+    box-shadow: 0 4px 16px rgba(27,153,139,.2);
+  }
+  .comp-card:nth-child(3) .comp-btn {
+    background: rgba(139,92,246,.12);
+    color: #8B5CF6;
+    border-color: rgba(139,92,246,.2);
+  }
+  .comp-card:nth-child(3) .comp-btn:hover {
+    background: rgba(139,92,246,.2);
+    box-shadow: 0 4px 16px rgba(139,92,246,.2);
+  }
+
+  /* ── SECTION OUTILS ── */
+  .tools-section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: .4rem;
+  }
+  .tools-section-sub {
+    color: var(--c-muted);
+    font-size: .9rem;
+    margin-bottom: 1.5rem;
+  }
+  .tools-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+  }
+  .tool-pill {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 2rem;
+    padding: .5rem 1.1rem;
+    font-size: .88rem;
+    color: rgba(240,240,240,.8);
+    font-weight: 400;
+    transition: border-color .2s, color .2s, background .2s;
+    cursor: default;
+  }
+  .tool-pill:hover {
+    border-color: rgba(255,107,53,.35);
+    color: var(--c-text);
+    background: rgba(255,107,53,.07);
+  }
+  .tool-pill span { font-size: 1rem; }
+
+  @media (max-width: 640px) {
+    .competences-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+{# ── PAGE HERO ── #}
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-label">BUT R&T – IUT de Roanne</div>
+    <h1>Mes <em>compétences</em></h1>
+    <p class="page-hero-sub">
+      Les 3 compétences clés du BUT Réseaux &amp; Télécommunications,
+      avec les ressources associées travaillées en 1ère année.
+    </p>
+  </div>
+</div>
+
+{# ── COMPÉTENCES ── #}
+<section class="skills-section">
+  <div class="skills-inner">
+
+    <div class="competences-grid">
+
+      {# ── COMPÉTENCE 1 ── #}
+      <div class="comp-card">
+        <div class="comp-header">
+          <div class="comp-num">01</div>
+          <div class="comp-header-text">
+            <span class="comp-tag">Réseaux</span>
+            <div class="comp-title">Administrer les réseaux et l'internet</div>
+          </div>
+        </div>
+        <div class="comp-divider"></div>
+        <div class="comp-body">
+          <div class="comp-body-label">Ressources associées</div>
+          <ul class="comp-ressources">
             <li>Principe et architecture des réseaux</li>
             <li>Architecture des systèmes numériques et informatiques</li>
           </ul>
+          <a href="/Compétence1" class="comp-btn">Voir le détail</a>
         </div>
-        <div class="col-md-4 mb-4">
-          <a href="/Compétence2" class="btn btn-dark btn-lg me-2">Connecter les entreprises et les usagers</a
-          <ul class="list-unstyled mb-0">
+      </div>
+
+      {# ── COMPÉTENCE 2 ── #}
+      <div class="comp-card">
+        <div class="comp-header">
+          <div class="comp-num">02</div>
+          <div class="comp-header-text">
+            <span class="comp-tag">Entreprises</span>
+            <div class="comp-title">Connecter les entreprises et les usagers</div>
+          </div>
+        </div>
+        <div class="comp-divider"></div>
+        <div class="comp-body">
+          <div class="comp-body-label">Ressources associées</div>
+          <ul class="comp-ressources">
             <li>Gestion de projet</li>
             <li>Mathématiques</li>
           </ul>
+          <a href="/Compétence2" class="comp-btn">Voir le détail</a>
         </div>
-        <div class="col-md-4 mb-4">
-          <a href="/Compétence3" class="btn btn-dark btn-lg me-2">Créer des outils et applications informatiques</a
-          <ul class="list-unstyled mb-0">
+      </div>
+
+      {# ── COMPÉTENCE 3 ── #}
+      <div class="comp-card">
+        <div class="comp-header">
+          <div class="comp-num">03</div>
+          <div class="comp-header-text">
+            <span class="comp-tag">Développement</span>
+            <div class="comp-title">Créer des outils et applications informatiques</div>
+          </div>
+        </div>
+        <div class="comp-divider"></div>
+        <div class="comp-body">
+          <div class="comp-body-label">Ressources associées</div>
+          <ul class="comp-ressources">
             <li>Programmation</li>
             <li>Technologies Web</li>
           </ul>
+          <a href="/Compétence3" class="comp-btn">Voir le détail</a>
         </div>
       </div>
+
     </div>
-  </section>
+
+    {# ── OUTILS & TECHNOLOGIES ── #}
+    <div class="tools-section-title">Outils &amp; technologies</div>
+    <p class="tools-section-sub">Les logiciels et langages utilisés durant ma formation.</p>
+    <div class="tools-grid">
+      <div class="tool-pill"><span>🌐</span> Cisco Packet Tracer</div>
+      <div class="tool-pill"><span>🐧</span> Linux (Debian/Ubuntu)</div>
+      <div class="tool-pill"><span>🪟</span> Windows Server</div>
+      <div class="tool-pill"><span>💻</span> HTML / CSS</div>
+      <div class="tool-pill"><span>🐘</span> PHP / Symfony</div>
+      <div class="tool-pill"><span>🐍</span> Python</div>
+      <div class="tool-pill"><span>🗄️</span> SQL / MySQL</div>
+      <div class="tool-pill"><span>🔧</span> Git / GitHub</div>
+      <div class="tool-pill"><span>📡</span> Wireshark</div>
+      <div class="tool-pill"><span>☁️</span> VirtualBox / VMware</div>
+    </div>
+
+  </div>
+</section>
 
 {% endblock %}

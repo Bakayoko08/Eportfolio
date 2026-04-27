@@ -1,99 +1,243 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} My hobbies
-{% endblock %}
+{% block title %}Hobbies – Zoumana Bakayoko{% endblock %}
 
 {% block body %}
 
+<style>
+  /* ── PAGE HERO ── */
+  .page-hero {
+    padding: 5rem 2rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    top: -40%; right: -20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,107,53,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .page-hero-inner { max-width: 1100px; margin: 0 auto; }
+  .page-label {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    color: var(--c-teal);
+    font-weight: 500;
+    margin-bottom: .6rem;
+  }
+  .page-hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+  }
+  .page-hero h1 em { font-style: normal; color: var(--c-orange); }
+  .page-hero-sub {
+    color: var(--c-muted);
+    font-size: .97rem;
+    margin-top: .75rem;
+    max-width: 520px;
+    line-height: 1.7;
+  }
 
-<body>
-<main class="container my-5">
+  /* ── GRILLE HOBBIES ── */
+  .hobbies-section { padding: 2rem 2rem 5rem; }
+  .hobbies-inner { max-width: 1100px; margin: 0 auto; }
 
-  <div class="row g-4">
+  .hobbies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
 
+  /* ── CARTE HOBBY ── */
+  .hobby-card {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform .3s, border-color .3s, box-shadow .3s;
+    cursor: default;
+  }
+  .hobby-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255,107,53,.35);
+    box-shadow: 0 16px 40px rgba(0,0,0,.3);
+  }
 
-    <div class="col-md-4">
-      <div class="card hobby-card h-100">
-        <img src="https://blog.en.uptodown.com/files/2019/01/manga-plus-featured.jpg" class="card-img-top" alt="Hobby 1">
-        <div class="card-body">
-          <h5 class="card-title">Mangas</h5>
-          <p class="card-text">
-            I like manga because they have a crazy animation and tell a lot of exciting fictional stories
-          </p>
-        </div>
-      </div>
-    </div>
+  .hobby-img-wrap {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+  }
+  .hobby-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .4s ease;
+  }
+  .hobby-card:hover .hobby-img-wrap img { transform: scale(1.06); }
 
-    
-    <div class="col-md-4">
-      <div class="card hobby-card h-100">
-        <img src="https://oppq.qc.ca/wp-content/uploads/Course-a-pied.jpg" class="card-img-top" alt="Hobby 2">
-        <div class="card-body">
-          <h5 class="card-title">Sport</h5>
-          <p class="card-text">
-            I regularly practice running to stay in shape and push myself.
-          </p>
-        </div>
-      </div>
-    </div>
+  .hobby-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(15,15,19,.7) 0%, transparent 60%);
+  }
 
+  .hobby-emoji {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    width: 40px; height: 40px;
+    border-radius: .6rem;
+    background: rgba(15,15,19,.65);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    border: 1px solid rgba(255,255,255,.1);
+  }
 
-    <div class="col-md-4">
-      <div class="card hobby-card h-100">
-        <img src="https://gamingcampus.fr/wp-content/uploads/2022/09/Thumbnail-genres-du-jv-1200x630-cropped.jpg" class="card-img-top" alt="Hobby 3">
-        <div class="card-body">
-          <h5 class="card-title">Videos games</h5>
-          <p class="card-text">
-            Passionate about immersive worlds, narrative games, and cooperative experiences.
-          </p>
-        </div>
-      </div>
-    </div>
+  .hobby-body { padding: 1.4rem 1.5rem 1.5rem; }
 
-     <div class="col-md-4">
-      <div class="card hobby-card h-100">
-        <img src="https://th.bing.com/th/id/R.e29abd69a3b4421a2051f32c3a4d4b41?rik=GV10veKNAUXsKg&pid=ImgRaw&r=0"class="card-img-top" alt="Hobby 4">
-        <div class="card-body">
-          <h5 class="card-title">Photography</h5>
-          <p class="card-text">
-            I love taking pictures of unique and beautiful moments to share with my loved ones
-          </p>
-        </div>
-      </div>
-    </div>
+  .hobby-tag {
+    display: inline-block;
+    background: rgba(27,153,139,.15);
+    color: var(--c-teal);
+    font-size: .72rem;
+    font-weight: 500;
+    padding: .22rem .65rem;
+    border-radius: 2rem;
+    margin-bottom: .65rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+  .hobby-tag.orange {
+    background: rgba(255,107,53,.12);
+    color: var(--c-orange);
+  }
 
-     <div class="col-md-4">
-      <div class="card hobby-card h-100">
-        <img src="https://img.freepik.com/premium-photo/group-friends-playing-board-game-together_14117-1167481.jpg" class="card-img-top" alt="Hobby 5">
-        <div class="card-body">
-          <h5 class="card-title">Society games</h5>
-          <p class="card-text">
-            I like to play board games to spend times with people i love.
-          </p>
-        </div>
-      </div>
-    </div>
+  .hobby-body h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--c-text);
+    margin-bottom: .5rem;
+  }
+  .hobby-body p {
+    font-size: .875rem;
+    color: var(--c-muted);
+    line-height: 1.65;
+  }
 
-     <div class="col-md-4">
-      <div class="card hobby-card h-100">
-        <img src="https://well.org/wp-content/uploads/2015/10/music.jpg" class="card-img-top" alt="Hobby 6">
-        <div class="card-body">
-          <h5 class="card-title">Music</h5>
-          <p class="card-text">
-            I love listening to music to relax, feel in another world and no think too much.
-          </p>
-        </div>
-      </div>
-    </div>
+  @media (max-width: 640px) {
+    .hobbies-grid { grid-template-columns: 1fr; }
+  }
+</style>
 
+{# ── PAGE HERO ── #}
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-label">Ce qui me passionne</div>
+    <h1>Mes <em>hobbies</em></h1>
+    <p class="page-hero-sub">
+      En dehors des études, voici les activités qui me ressourcent et me définissent.
+    </p>
   </div>
+</div>
 
-</main>
+{# ── GRILLE ── #}
+<section class="hobbies-section">
+  <div class="hobbies-inner">
+    <div class="hobbies-grid">
 
+      {# Mangas #}
+      <div class="hobby-card">
+        <div class="hobby-img-wrap">
+          <img src="https://blog.en.uptodown.com/files/2019/01/manga-plus-featured.jpg" alt="Mangas">
+          <div class="hobby-overlay"></div>
+          <div class="hobby-emoji">📚</div>
+        </div>
+        <div class="hobby-body">
+          <span class="hobby-tag">Lecture</span>
+          <h3>Mangas</h3>
+          <p>J'adore les mangas pour leurs univers visuels uniques et leurs histoires fictionnelles captivantes qui ne ressemblent à rien d'autre.</p>
+        </div>
+      </div>
 
+      {# Sport #}
+      <div class="hobby-card">
+        <div class="hobby-img-wrap">
+          <img src="https://oppq.qc.ca/wp-content/uploads/Course-a-pied.jpg" alt="Sport">
+          <div class="hobby-overlay"></div>
+          <div class="hobby-emoji">🏃</div>
+        </div>
+        <div class="hobby-body">
+          <span class="hobby-tag orange">Sport</span>
+          <h3>Course à pied</h3>
+          <p>Je pratique régulièrement la course pour rester en forme, me dépasser et vider la tête après les journées chargées.</p>
+        </div>
+      </div>
 
-</body>
-</html>
+      {# Jeux vidéo #}
+      <div class="hobby-card">
+        <div class="hobby-img-wrap">
+          <img src="https://gamingcampus.fr/wp-content/uploads/2022/09/Thumbnail-genres-du-jv-1200x630-cropped.jpg" alt="Jeux vidéo">
+          <div class="hobby-overlay"></div>
+          <div class="hobby-emoji">🎮</div>
+        </div>
+        <div class="hobby-body">
+          <span class="hobby-tag">Gaming</span>
+          <h3>Jeux vidéo</h3>
+          <p>Passionné par les univers immersifs, les jeux narratifs et les expériences coopératives qui créent des souvenirs partagés.</p>
+        </div>
+      </div>
 
+      {# Photographie #}
+      <div class="hobby-card">
+        <div class="hobby-img-wrap">
+          <img src="https://th.bing.com/th/id/R.e29abd69a3b4421a2051f32c3a4d4b41?rik=GV10veKNAUXsKg&pid=ImgRaw&r=0" alt="Photographie">
+          <div class="hobby-overlay"></div>
+          <div class="hobby-emoji">📷</div>
+        </div>
+        <div class="hobby-body">
+          <span class="hobby-tag orange">Créativité</span>
+          <h3>Photographie</h3>
+          <p>J'aime capturer des instants uniques et beaux pour les partager avec mes proches et garder une trace des moments qui comptent.</p>
+        </div>
+      </div>
+
+      {# Jeux de société #}
+      <div class="hobby-card">
+        <div class="hobby-img-wrap">
+          <img src="https://img.freepik.com/premium-photo/group-friends-playing-board-game-together_14117-1167481.jpg" alt="Jeux de société">
+          <div class="hobby-overlay"></div>
+          <div class="hobby-emoji">🎲</div>
+        </div>
+        <div class="hobby-body">
+          <span class="hobby-tag">Social</span>
+          <h3>Jeux de société</h3>
+          <p>Les jeux de société sont pour moi un excellent moyen de passer du temps de qualité avec les personnes que j'aime.</p>
+        </div>
+      </div>
+
+      {# Musique #}
+      <div class="hobby-card">
+        <div class="hobby-img-wrap">
+          <img src="https://well.org/wp-content/uploads/2015/10/music.jpg" alt="Musique">
+          <div class="hobby-overlay"></div>
+          <div class="hobby-emoji">🎵</div>
+        </div>
+        <div class="hobby-body">
+          <span class="hobby-tag orange">Détente</span>
+          <h3>Musique</h3>
+          <p>J'écoute de la musique pour me relaxer, m'évader et trouver l'inspiration — une bulle de calme dans le quotidien.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 {% endblock %}

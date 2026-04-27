@@ -1,46 +1,434 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Contacts
-{% endblock %}
+{% block title %}Contact – Zoumana Bakayoko{% endblock %}
 
 {% block body %}
-    <section id="contact" class="bg-light">
-    <div class="container">
-      <h2 class="mb-4">Contact</h2>
-      <div class="row">
-        <div class="col-md-6 mb-4">
-          <p>
-            Envie d'échanger ?
-            N’hésite pas à m’écrire via le formulaire ci-dessous.
-          </p>
-          <ul class="list-unstyled">
-            <li><strong>Email:</strong> zoumana.bakayoko@etu.univ-st-etienne.fr</li>
-            <li><strong>Tel:</strong> +33 07 80 65 50 59</li>
-            <a href="https://www.instagram.com/z.bvkus?igsh=ZGw5d3BpOWN3N3c2&utm_source=qr" class="btn btn-outline-dark btn-lg">Instagram</a>
-            <a href="https://snapchat.com/t/yOyCbFzn" class="btn btn-outline-dark btn-lg">Snapchat</a>
-            
-          </ul>
+
+<style>
+  /* ── PAGE HERO ── */
+  .page-hero {
+    padding: 5rem 2rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    top: -40%; right: -20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,107,53,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .page-hero-inner { max-width: 1100px; margin: 0 auto; }
+  .page-label {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    color: var(--c-teal);
+    font-weight: 500;
+    margin-bottom: .6rem;
+  }
+  .page-hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+  }
+  .page-hero h1 em { font-style: normal; color: var(--c-orange); }
+  .page-hero-sub {
+    color: var(--c-muted);
+    font-size: .97rem;
+    margin-top: .75rem;
+    max-width: 480px;
+    line-height: 1.7;
+  }
+
+  /* ── SECTION ── */
+  .contact-section { padding: 2rem 2rem 5rem; }
+  .contact-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  /* ── COLONNE INFOS ── */
+  .contact-info { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .info-block {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.5rem;
+    transition: border-color .25s, transform .25s;
+  }
+  .info-block:hover {
+    border-color: rgba(255,107,53,.3);
+    transform: translateX(4px);
+  }
+  .info-block-top {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: .5rem;
+  }
+  .info-icon {
+    width: 38px; height: 38px;
+    border-radius: .55rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .info-icon.orange { background: rgba(255,107,53,.12); }
+  .info-icon.teal   { background: rgba(27,153,139,.12); }
+  .info-icon.purple { background: rgba(139,92,246,.12); }
+  .info-icon.pink   { background: rgba(236,72,153,.12); }
+
+  .info-block-label {
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--c-muted);
+    font-weight: 500;
+  }
+  .info-block-val {
+    font-size: .92rem;
+    color: var(--c-text);
+    font-weight: 500;
+    word-break: break-all;
+  }
+  .info-block-val a {
+    color: var(--c-text);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .info-block-val a:hover { color: var(--c-orange); }
+
+  /* Réseaux sociaux */
+  .socials-title {
+    font-family: 'Syne', sans-serif;
+    font-size: .85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--c-muted);
+    margin-bottom: .85rem;
+  }
+  .socials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: .75rem;
+  }
+  .social-btn {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: .8rem;
+    padding: .75rem 1rem;
+    text-decoration: none;
+    color: var(--c-text);
+    font-size: .88rem;
+    font-weight: 500;
+    transition: border-color .2s, background .2s, transform .2s;
+  }
+  .social-btn:hover {
+    transform: translateY(-2px);
+    background: rgba(255,255,255,.07);
+  }
+  .social-btn.linkedin:hover { border-color: #0A66C2; }
+  .social-icon {
+    width: 30px; height: 30px;
+    border-radius: .4rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .95rem;
+    flex-shrink: 0;
+  }
+  .social-icon.li { background: #0A66C2; }
+
+  /* ── FORMULAIRE ── */
+  .contact-form-wrap {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: var(--radius);
+    padding: 2rem 2.2rem;
+  }
+  .form-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+  .form-group { margin-bottom: 1.2rem; }
+  .form-group label {
+    display: block;
+    font-size: .82rem;
+    font-weight: 500;
+    color: var(--c-muted);
+    margin-bottom: .45rem;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: .7rem;
+    padding: .8rem 1rem;
+    color: var(--c-text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .93rem;
+    outline: none;
+    transition: border-color .2s, background .2s;
+    resize: vertical;
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: rgba(240,240,240,.3); }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--c-orange);
+    background: rgba(255,107,53,.05);
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .btn-submit {
+    width: 100%;
+    background: var(--c-orange);
+    color: #fff;
+    border: none;
+    padding: .9rem 1.5rem;
+    border-radius: .8rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .97rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: .5rem;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255,107,53,.4);
+  }
+
+  /* Message erreur */
+  .form-error {
+    display: none;
+    background: rgba(255,107,53,.1);
+    border: 1px solid rgba(255,107,53,.25);
+    border-radius: .8rem;
+    padding: 1rem 1.25rem;
+    color: #fca47a;
+    font-size: .9rem;
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .form-error.show { display: block; }
+
+  .btn-submit:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .form-success {
+    display: none;
+    background: rgba(27,153,139,.1);
+    border: 1px solid rgba(27,153,139,.25);
+    border-radius: .8rem;
+    padding: 1rem 1.25rem;
+    color: #4adebc;
+    font-size: .9rem;
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .form-success.show { display: block; }
+
+  @media (max-width: 768px) {
+    .contact-inner { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+
+{# ── PAGE HERO ── #}
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-label">Restons en contact</div>
+    <h1>Me <em>contacter</em></h1>
+    <p class="page-hero-sub">
+      Une question, une opportunité de stage ou juste envie d'échanger ? N'hésitez pas à m'écrire.
+    </p>
+  </div>
+</div>
+
+{# ── CONTENU ── #}
+<section class="contact-section">
+  <div class="contact-inner">
+
+    {# ── COLONNE GAUCHE – INFOS ── #}
+    <div class="contact-info">
+
+      <div class="info-block">
+        <div class="info-block-top">
+          <div class="info-icon orange">✉️</div>
+          <div class="info-block-label">Email</div>
         </div>
-        <div class="col-md-6">
-          <form>
-            <div class="mb-3">
-              <label for="name" class="form-label">Nom</label>
-              <input type="text" class="form-control" id="name" placeholder="Votre nom">
-            </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" placeholder="vous@exemple.com">
-            </div>
-            <div class="mb-3">
-              <label for="message" class="form-label">Message</label>
-              <textarea class="form-control" id="message" rows="4"
-                        placeholder="Parlez-moi de votre projet"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Envoyer</button>
-          </form>
+        <div class="info-block-val">
+          <a href="mailto:zoumana.bakayoko@etu.univ-st-etienne.fr">
+            zoumana.bakayoko@etu.univ-st-etienne.fr
+          </a>
         </div>
       </div>
+
+      <div class="info-block">
+        <div class="info-block-top">
+          <div class="info-icon teal">📞</div>
+          <div class="info-block-label">Téléphone</div>
+        </div>
+        <div class="info-block-val">
+          <a href="tel:+33780655059">+33 07 80 65 50 59</a>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <div class="info-block-top">
+          <div class="info-icon purple">📍</div>
+          <div class="info-block-label">Localisation</div>
+        </div>
+        <div class="info-block-val">Roanne, France</div>
+      </div>
+
+      {# Réseaux sociaux #}
+      <div>
+        <div class="socials-title">Réseaux sociaux</div>
+        <div class="socials-grid">
+          <a href="https://www.linkedin.com/in/zoumana-bakayoko-0987363b6"
+             target="_blank" rel="noopener noreferrer"
+             class="social-btn linkedin">
+            <div class="social-icon li">💼</div>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+
     </div>
-  </section>
+
+    {# ── COLONNE DROITE – FORMULAIRE ── #}
+    <div class="contact-form-wrap">
+      <div class="form-title">Envoyer un message</div>
+
+      {# ─────────────────────────────────────────────────────────
+         Formspree : remplacez VOTRE_ID par l'ID obtenu sur
+         https://formspree.io  (ex: xpwzgkla)
+         ───────────────────────────────────────────────────────── #}
+      <form id="contactForm"
+            action="https://formspree.io/f/mdayrael"
+            method="POST">
+
+        {# Redirection après envoi (optionnel) #}
+        <input type="hidden" name="_next"
+               value="https://votre-site.com/blog/Contacts?merci=1">
+
+        {# Sujet de l'email reçu #}
+        <input type="hidden" name="_subject"
+               value="Nouveau message depuis votre portfolio">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Nom</label>
+            <input type="text" id="name" name="name"
+                   placeholder="Votre nom" required>
+          </div>
+          <div class="form-group">
+            <label for="prenom">Prénom</label>
+            <input type="text" id="prenom" name="prenom"
+                   placeholder="Votre prénom">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Votre email</label>
+          <input type="email" id="email" name="email"
+                 placeholder="vous@exemple.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="sujet">Sujet</label>
+          <input type="text" id="sujet" name="sujet"
+                 placeholder="Stage, collaboration, question…">
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5"
+                    placeholder="Décrivez votre demande…" required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          ✉ Envoyer le message
+        </button>
+
+        <div class="form-success" id="formSuccess">
+          ✅ Message envoyé ! Je vous répondrai dans les plus brefs délais.
+        </div>
+        <div class="form-error" id="formError">
+          ❌ Une erreur est survenue. Veuillez réessayer ou m'écrire directement par email.
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const form    = document.getElementById('contactForm');
+  const btn     = document.getElementById('submitBtn');
+  const success = document.getElementById('formSuccess');
+  const error   = document.getElementById('formError');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // État chargement
+    btn.disabled = true;
+    btn.textContent = '⏳ Envoi en cours…';
+    success.classList.remove('show');
+    error.classList.remove('show');
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        // Succès
+        success.classList.add('show');
+        form.reset();
+        setTimeout(() => success.classList.remove('show'), 6000);
+      } else {
+        // Erreur serveur
+        error.classList.add('show');
+        setTimeout(() => error.classList.remove('show'), 6000);
+      }
+    } catch (err) {
+      // Erreur réseau
+      error.classList.add('show');
+      setTimeout(() => error.classList.remove('show'), 6000);
+    }
+
+    // Réactiver le bouton
+    btn.disabled = false;
+    btn.textContent = '✉ Envoyer le message';
+  });
+</script>
 
 {% endblock %}

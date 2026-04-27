@@ -70,6 +70,12 @@ final class BlogController extends AbstractController
             'controller_name' => 'BlogController',
         ]);
     }
+    #[Route('/blog/CV', name: 'app_CV')]
+    public function CV(): Response
+    {
+        return $this->render('blog/CV Bakayoko.pdf', [
+            'controller_name' => 'BlogController',
+        ]);
+    }
 
 }
-

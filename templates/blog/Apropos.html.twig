@@ -1,45 +1,379 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} A propos
-{% endblock %}
+{% block title %}À propos – Zoumana Bakayoko{% endblock %}
 
 {% block body %}
 
-  <section id="about">
-    <div class="container">
-      <h2 class="mb-4">À propos</h2>
-      <div class="row">
-        <div class="col-md-8">
-          <p>
-            Je suis un etudiant basé en France, à l'université Jean Monnet Saint-Etienne de Roanne (IUT de Roanne).
-            Je suis en première de réseau et télécommunication, un passionné de la nouvelle techonlogie.
-            J'aime apprendre de nouvelles choses, je suis toujours en quête de nouvelles connaissances et compétences.
-          </p>
-          <p>
-            J’ai travaillé sur plusieurs projets dans le cadre de mes études, que ce soit collectif ou individuel dans plusieurs ressources notamment
-            en réseau et en informatiques 
-          </p>
+<style>
+  /* ── PAGE HERO ── */
+  .page-hero {
+    padding: 5rem 2rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    top: -40%; right: -20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,107,53,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .page-hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .page-label {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    color: var(--c-teal);
+    font-weight: 500;
+    margin-bottom: .6rem;
+  }
+  .page-hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 0;
+  }
+  .page-hero h1 em {
+    font-style: normal;
+    color: var(--c-orange);
+  }
+
+  /* ── MAIN GRID ── */
+  .about-section { padding: 3rem 2rem 5rem; }
+  .about-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  /* ── TEXTE ── */
+  .about-body p {
+    color: var(--c-muted);
+    font-size: .97rem;
+    line-height: 1.85;
+    margin-bottom: 1.25rem;
+  }
+  .about-body p:last-child { margin-bottom: 0; }
+  .about-body strong { color: var(--c-text); font-weight: 500; }
+
+  /* ── TIMELINE ── */
+  .timeline { margin-top: 2.5rem; }
+  .timeline-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: var(--c-text);
+  }
+  .tl-item {
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    position: relative;
+  }
+  .tl-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 15px; top: 32px;
+    width: 2px;
+    bottom: 0;
+    background: rgba(255,255,255,.08);
+  }
+  .tl-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(255,107,53,.15);
+    border: 2px solid rgba(255,107,53,.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .8rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .tl-dot.teal {
+    background: rgba(27,153,139,.15);
+    border-color: rgba(27,153,139,.3);
+  }
+  .tl-year {
+    font-size: .75rem;
+    color: var(--c-orange);
+    font-weight: 500;
+    margin-bottom: .2rem;
+  }
+  .tl-year.teal { color: var(--c-teal); }
+  .tl-name {
+    font-family: 'Syne', sans-serif;
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--c-text);
+    margin-bottom: .2rem;
+  }
+  .tl-desc {
+    font-size: .83rem;
+    color: var(--c-muted);
+    line-height: 1.5;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .info-card {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+  .info-card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: .85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--c-muted);
+    margin-bottom: 1rem;
+  }
+
+  /* Infos rapides */
+  .info-rows { display: flex; flex-direction: column; gap: .75rem; }
+  .info-row {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+  }
+  .info-icon {
+    width: 36px; height: 36px;
+    border-radius: .5rem;
+    background: rgba(255,107,53,.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .95rem;
+    flex-shrink: 0;
+  }
+  .info-icon.teal { background: rgba(27,153,139,.1); }
+  .info-icon.green { background: rgba(34,197,94,.1); }
+  .info-label { font-size: .75rem; color: var(--c-muted); }
+  .info-val   { font-size: .9rem; font-weight: 500; color: var(--c-text); }
+
+  /* Badge statut */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    background: rgba(34,197,94,.12);
+    border: 1px solid rgba(34,197,94,.25);
+    color: #4ade80;
+    font-size: .82rem;
+    font-weight: 500;
+    padding: .35rem .85rem;
+    border-radius: 2rem;
+  }
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    animation: pulse 2s infinite;
+  }
+
+  /* Langues */
+  .lang-list { display: flex; flex-direction: column; gap: .7rem; }
+  .lang-row { display: flex; flex-direction: column; gap: .3rem; }
+  .lang-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: .85rem;
+  }
+  .lang-name { color: var(--c-text); font-weight: 500; }
+  .lang-level { color: var(--c-muted); font-size: .8rem; }
+  .lang-bar {
+    height: 4px;
+    background: rgba(255,255,255,.08);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .lang-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--c-orange), #F7C59F);
+  }
+
+  /* CTA CV */
+  .cv-card {
+    background: linear-gradient(135deg, rgba(255,107,53,.15), rgba(27,153,139,.1));
+    border: 1px solid rgba(255,107,53,.2);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .cv-card p {
+    color: var(--c-muted);
+    font-size: .88rem;
+    margin: .5rem 0 1.2rem;
+    line-height: 1.5;
+  }
+  .btn-primary {
+    background: var(--c-orange);
+    color: #fff;
+    border: none;
+    padding: .75rem 1.5rem;
+    border-radius: .7rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .92rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255,107,53,.4);
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  @media (max-width: 768px) {
+    .about-inner { grid-template-columns: 1fr; }
+  }
+</style>
+
+{# ── PAGE HERO ── #}
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-label">Qui suis-je ?</div>
+    <h1>À <em>propos</em></h1>
+  </div>
+</div>
+
+{# ── CONTENU PRINCIPAL ── #}
+<section class="about-section">
+  <div class="about-inner">
+
+    {# COLONNE GAUCHE #}
+    <div>
+      <div class="about-body">
+        <p>
+          Je suis étudiant à l'<strong>IUT de Roanne</strong> (Université Jean Monnet Saint-Étienne),
+          actuellement en première année de <strong>BUT Réseaux &amp; Télécommunications</strong>.
+          Passionné par les nouvelles technologies, je suis toujours en quête de nouvelles
+          connaissances et compétences.
+        </p>
+        <p>
+          J'aime comprendre comment les choses fonctionnent, que ce soit une infrastructure réseau,
+          un système d'exploitation ou une application web. Cette curiosité me pousse à explorer
+          au-delà des cours et à pratiquer par moi-même.
+        </p>
+        <p>
+          J'ai travaillé sur plusieurs projets dans le cadre de mes études — collectifs et individuels —
+          couvrant des domaines tels que les <strong>réseaux</strong>, l'<strong>administration système</strong>
+          et le <strong>développement web</strong>.
+        </p>
+      </div>
+
+      {# TIMELINE #}
+      <div class="timeline">
+        <div class="timeline-title">Mon parcours</div>
+
+        <div class="tl-item">
+          <div class="tl-dot">🎓</div>
+          <div>
+            <div class="tl-year">2024 – Aujourd'hui</div>
+            <div class="tl-name">BUT Réseaux &amp; Télécommunications</div>
+            <div class="tl-desc">IUT de Roanne – Université Jean Monnet Saint-Étienne</div>
+          </div>
         </div>
-        <div class="col-md-4">
-          <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span>Localisation</span>
-              <span class="badge bg-primary rounded-pill">France</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span>Expérience</span>
-              <span class="badge bg-primary rounded-pill">En apprentissage</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span>Statut</span>
-              <span class="badge bg-success rounded-pill">Disponible</span>
-            </li>
-          </ul>
+
+        <div class="tl-item">
+          <div class="tl-dot teal">📘</div>
+          <div>
+            <div class="tl-year teal">2021 – 2024</div>
+            <div class="tl-name">Baccalauréat</div>
+            <div class="tl-desc">Série générale – Mathématiques &amp; NSI</div>
+          </div>
         </div>
+
       </div>
     </div>
-  </section>
-        
 
+    {# COLONNE DROITE – SIDEBAR #}
+    <div class="sidebar">
+
+      {# Infos rapides #}
+      <div class="info-card">
+        <div class="info-card-title">Informations</div>
+        <div class="info-rows">
+          <div class="info-row">
+            <div class="info-icon">📍</div>
+            <div>
+              <div class="info-label">Localisation</div>
+              <div class="info-val">Roanne, France</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon teal">🎓</div>
+            <div>
+              <div class="info-label">Formation</div>
+              <div class="info-val">BUT R&T – IUT Roanne</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon">📅</div>
+            <div>
+              <div class="info-label">Expérience</div>
+              <div class="info-val">En apprentissage (1ère année)</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon green">✅</div>
+            <div>
+              <div class="info-label">Disponibilité</div>
+              <div class="info-val">
+                <span class="status-badge">
+                  <span class="status-dot"></span>
+                  Disponible
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# Langues #}
+      <div class="info-card">
+        <div class="info-card-title">Langues</div>
+        <div class="lang-list">
+          <div class="lang-row">
+            <div class="lang-top">
+              <span class="lang-name">Français</span>
+              <span class="lang-level">Natif</span>
+            </div>
+            <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
+          </div>
+          <div class="lang-row">
+            <div class="lang-top">
+              <span class="lang-name">Anglais</span>
+              <span class="lang-level">Intermédiaire (B1)</span>
+            </div>
+            <div class="lang-bar"><div class="lang-fill" style="width:55%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      {# CV #}
+      <div class="cv-card">
+        <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700">Mon CV</div>
+        <p>Téléchargez mon CV pour en savoir plus sur mon parcours.</p>
+        {# Remplacez le href par le chemin réel de votre CV #}
+        <a href="/bog/CV Bakayoko.pdf" class="btn-primary">⬇ Télécharger le CV</a>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 {% endblock %}
