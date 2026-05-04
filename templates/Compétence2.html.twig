@@ -1,10 +1,280 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Compétence 2
-{% endblock %}
+{% block title %}Compétence 2 – Connecter les entreprises et les usagers{% endblock %}
 
 {% block body %}
-    <h1>welcome!
-    </h1>
+
+<style>
+  /* ── PAGE HERO ── */
+  .page-hero {
+    padding: 5rem 2rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    top: -40%; right: -20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(27,153,139,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .page-hero-inner { max-width: 1100px; margin: 0 auto; }
+  .page-label {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    color: var(--c-teal);
+    font-weight: 500;
+    margin-bottom: .6rem;
+  }
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: .85rem;
+    color: var(--c-muted);
+    margin-bottom: 1.2rem;
+  }
+  .breadcrumb-nav a {
+    color: var(--c-muted);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .breadcrumb-nav a:hover { color: var(--c-teal); }
+  .breadcrumb-nav span { color: var(--c-teal); }
+
+  .page-hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    line-height: 1.2;
+  }
+  .page-hero h1 em { font-style: normal; color: var(--c-teal); }
+  .page-hero-sub {
+    color: var(--c-muted);
+    font-size: .97rem;
+    margin-top: .75rem;
+    max-width: 580px;
+    line-height: 1.7;
+  }
+  .comp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    background: rgba(27,153,139,.12);
+    border: 1px solid rgba(27,153,139,.2);
+    color: var(--c-teal);
+    font-size: .78rem;
+    font-weight: 500;
+    padding: .35rem .85rem;
+    border-radius: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  /* ── CONTENU PRINCIPAL ── */
+  .comp-section { padding: 2rem 2rem 5rem; }
+  .comp-inner { max-width: 1100px; margin: 0 auto; }
+
+  /* ── CARTES DE NAVIGATION ── */
+  .nav-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .nav-card {
+    display: flex;
+    align-items: stretch;
+    text-decoration: none;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.04);
+    transition: transform .3s, border-color .3s, box-shadow .3s;
+  }
+  .nav-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 40px rgba(0,0,0,.3);
+  }
+  .nav-card.reflexive:hover { border-color: rgba(27,153,139,.4); }
+  .nav-card.preuves:hover   { border-color: rgba(139,92,246,.4); }
+
+  .nav-card-accent { width: 5px; flex-shrink: 0; }
+  .nav-card.reflexive .nav-card-accent { background: var(--c-teal); }
+  .nav-card.preuves   .nav-card-accent { background: #8B5CF6; }
+
+  .nav-card-body {
+    padding: 1.75rem 1.75rem 1.75rem 1.5rem;
+    flex: 1;
+  }
+  .nav-card-icon {
+    width: 48px; height: 48px;
+    border-radius: .75rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .nav-card.reflexive .nav-card-icon { background: rgba(27,153,139,.12); }
+  .nav-card.preuves   .nav-card-icon { background: rgba(139,92,246,.12); }
+
+  .nav-card-label {
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    font-weight: 500;
+    margin-bottom: .4rem;
+  }
+  .nav-card.reflexive .nav-card-label { color: var(--c-teal); }
+  .nav-card.preuves   .nav-card-label { color: #8B5CF6; }
+
+  .nav-card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--c-text);
+    margin-bottom: .5rem;
+    line-height: 1.3;
+  }
+  .nav-card-desc {
+    font-size: .85rem;
+    color: var(--c-muted);
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+  }
+  .nav-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .85rem;
+    font-weight: 500;
+    padding: .55rem 1.1rem;
+    border-radius: .6rem;
+    transition: background .2s;
+  }
+  .nav-card-cta::after { content: '→'; transition: transform .2s; }
+  .nav-card:hover .nav-card-cta::after { transform: translateX(4px); }
+
+  .nav-card.reflexive .nav-card-cta { background: rgba(27,153,139,.12); color: var(--c-teal); }
+  .nav-card.reflexive:hover .nav-card-cta { background: rgba(27,153,139,.2); }
+  .nav-card.preuves   .nav-card-cta { background: rgba(139,92,246,.12); color: #8B5CF6; }
+  .nav-card.preuves:hover   .nav-card-cta { background: rgba(139,92,246,.2); }
+
+  /* ── APERÇU RESSOURCES ── */
+  .overview-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    color: var(--c-text);
+  }
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+  .overview-item {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 1rem;
+    padding: 1.2rem 1.3rem;
+    transition: border-color .2s;
+  }
+  .overview-item:hover { border-color: rgba(27,153,139,.25); }
+  .overview-item-icon { font-size: 1.3rem; margin-bottom: .6rem; }
+  .overview-item-name {
+    font-family: 'Syne', sans-serif;
+    font-size: .93rem;
+    font-weight: 700;
+    color: var(--c-text);
+    margin-bottom: .3rem;
+  }
+  .overview-item-desc {
+    font-size: .8rem;
+    color: var(--c-muted);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 640px) {
+    .nav-cards { grid-template-columns: 1fr; }
+  }
+</style>
+
+{# ── PAGE HERO ── #}
+<div class="page-hero">
+  <div class="page-hero-inner">
+
+    <div class="breadcrumb-nav">
+      <a href="/blog/Compétences">Compétences</a>
+      <span>›</span>
+      <span style="color:var(--c-text)">Compétence 2</span>
+    </div>
+
+    <div class="comp-badge">🏢 Compétence 2</div>
+    <h1>Connecter les <em>entreprises</em><br>et les usagers</h1>
+    <p class="page-hero-sub">
+      Concevoir et déployer des solutions de connectivité adaptées aux besoins
+      des organisations et de leurs utilisateurs.
+    </p>
+  </div>
+</div>
+
+{# ── CONTENU ── #}
+<section class="comp-section">
+  <div class="comp-inner">
+
+    {# ── CARTES DE NAVIGATION ── #}
+    <div class="nav-cards">
+
+      {# Analyse réflexive #}
+      <a href="/Compétence2/AnalyseReflexive" class="nav-card reflexive">
+        <div class="nav-card-accent"></div>
+        <div class="nav-card-body">
+          <div class="nav-card-icon">🪞</div>
+          <div class="nav-card-label">Retour d'expérience</div>
+          <div class="nav-card-title">Analyse réflexive</div>
+          <div class="nav-card-desc">
+            Mon regard critique sur les apprentissages réalisés, les difficultés rencontrées
+            et les progrès accomplis dans cette compétence.
+          </div>
+          <div class="nav-card-cta">Lire l'analyse</div>
+        </div>
+      </a>
+
+      {# Documents de preuve #}
+      <a href="/Compétence2/DocumentsPreuve" class="nav-card preuves">
+        <div class="nav-card-accent"></div>
+        <div class="nav-card-body">
+          <div class="nav-card-icon">📁</div>
+          <div class="nav-card-label">Traces &amp; preuves</div>
+          <div class="nav-card-title">Documents de preuve</div>
+          <div class="nav-card-desc">
+            Les travaux, rapports, captures et productions réalisés qui attestent
+            de ma maîtrise de cette compétence.
+          </div>
+          <div class="nav-card-cta">Voir les documents</div>
+        </div>
+      </a>
+
+    </div>
+
+    {# ── APERÇU RESSOURCES ── #}
+    <div class="overview-title">Ressources travaillées</div>
+    <div class="overview-grid">
+      <div class="overview-item">
+        <div class="overview-item-icon">📊</div>
+        <div class="overview-item-name">Gestion de projet</div>
+        <div class="overview-item-desc">Méthodes de planification, conduite de projet, travail en équipe</div>
+      </div>
+      <div class="overview-item">
+        <div class="overview-item-icon">📐</div>
+        <div class="overview-item-name">Mathématiques</div>
+        <div class="overview-item-desc">Algèbre, probabilités, logique appliquée aux réseaux</div>
+      </div>
+    </div>
+
+  </div>
+</section>
 
 {% endblock %}
